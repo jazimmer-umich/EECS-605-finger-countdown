@@ -1,0 +1,30 @@
+Finger-Based Count-Down to Blastoff (Heroku App Submission)
+Joshua Zimmer (jazimmer@umich.edu)
+
+App Instructions:
+
+Heroku Site: https://calm-chamber-47389.herokuapp.com/
+Jupyter Password: EECS605pwd
+Dashboard File: EECS_605_Modularized_Dashboard.ipynb
+
+1. Open the above file on the associated Heroku App using the password provided
+2. Download hand_examples.zip from this assignment submission and unzip the folder
+3. Insert your 10-digit US-based phone number in for the 10 Xs in the phone_number variable in the EECS_605_Modularized_Dashboard Jupyter Notebook
+4. Run the entire notebook (i.e. Kernel > Restart & Run All)
+
+5. You should be greeted with the prompt: "> Current State (i.e. Next Number to Show): 5", which indicates that to advance the state, a picture showing a hand with "5" fingers held up should be uploaded. If any other picture is uploaded, the state should not advance. (See the notes below for possible issues with this.)
+6. Click the "Upload" button and browse your computer to the unzipped hand_examples folder
+7. Select the "5" folder, select "hand.jpeg", click "Open", and click "Upload to AWS".
+
+("Waiting for result" will print while behind the scenes...) After the file is uploaded to S3, a Lambda function that runs the prediction of the number of fingers will trigger, which generates results.txt, which in turn, will ultimately upload the results.txt file back to S3, which in turn will trigger a download of results.txt on the Modularized Dashboard. After the file is downloaded, the .py file will extract the underlying results and determine whether or not to advance the state (based on whether or not the results.txt file indicated that an image with a hand showing "5" fingers was uploaded).
+
+8. If a "5" was uploaded, the state will advance and "> Current State (i.e. Next Number to Show): 4" should print out instead. Otherwise, the original prompt of "> Current State (i.e. Next Number to Show): 5" should print again.
+
+9. Without restarting the notebook, repeat Steps 5-8 again for "4", "3", "2", and "1" respectively in place of "5". If an image is uploaded out of order, the state will not reset to 5, but instead will remain in its previous place.
+10. After the final image "1" is uploaded, the Modular Dashboard triggers a download of "blastoff.jpg" which will be displayed on the Dashboard. Simultaneously, a signal is sent to AWS's SNS (Simple Notification Service) in order to generate a blastoff text message that is sent to the phone number declared in the phone_number variable. The state resets to "5" and the entire process can be repeated in perpetuity.
+
+
+Notes:
+* The trained CNN ResNet model for finger digit recognition was trained on the training section of a very specific Kaggle dataset (https://www.kaggle.com/koryakinp/fingers). This CNN model has demonstrated problems of predicting real-world generated data. Specifically, the model appears to only be able to predict the number of fingers held up on a disembodied hand, in front of a near-black, slightly cloudy background with the same distance from the camera as that provided in the training data. Currently, the model performs extremely poorly on photos I have taken of my own hands, though the preprocessing step does correctly crop out the center of images and scale those images to the same style as that of the training data. The model is also unable to make sense of photos that do not contain hands at all. I hope to improve upon the model in future stages of the project using data augmentation and/or potential additional preprocessing steps.
+* The hand images provided in hand_examples.zip came from the "test" dataset provided on the above Kaggle website and therefore, while the model isn't generalizeable to real-world data, it is at least generalizeable beyond the training set itself.
+* The available states are as follows: [5, 4, 3, 2, 1, 0]. However, the 0 state only exists temporarily while the state-reset takes place and should not be observed at any point by the end user.

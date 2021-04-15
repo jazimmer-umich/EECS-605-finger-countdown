@@ -35,8 +35,8 @@ def send_blastoff_text():
 
     
     sns = boto3.client('sns',
-        aws_access_key_id='AKIAULZTKYG7SKOV2IEK',
-        aws_secret_access_key='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',
+        aws_access_key_id='_________',
+        aws_secret_access_key='__________',
         region_name = 'us-east-2'
         )
 
@@ -59,8 +59,8 @@ def send_blastoff_text():
 def download_blastoff_image():
     client = boto3.client(
         's3',
-        aws_access_key_id='AKIAULZTKYG7SKOV2IEK',
-        aws_secret_access_key='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',
+        aws_access_key_id='_________',
+        aws_secret_access_key='__________',
         region_name = 'us-east-2'
     )
     client.download_file('jazimmer-eecs-605-module-08-fingers-dl', 'blastoff.jpg', '/tmp/blastoff.jpg')

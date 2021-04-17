@@ -20,7 +20,7 @@ import onnxruntime as rt
 
 states = [5, 4, 3, 2, 1, 0]
 current_state_num = 0
-cell_number = '+19548296800'
+cell_number = '+1XXXXXXXXXX' # TODO: Change to your personal cellphone number
 
 local_display = None
 
@@ -34,9 +34,9 @@ def send_blastoff_text():
     global cell_number
 
     
-    sns = boto3.client('sns',
-        aws_access_key_id='_________',
-        aws_secret_access_key='__________',
+    sns = boto3.client('sns'
+        aws_access_key_id='_________', # TODO: Add AWS Access Key
+        aws_secret_access_key='__________', # TODO: Add AWS Access Key
         region_name = 'us-east-2'
         )
 
@@ -59,8 +59,8 @@ def send_blastoff_text():
 def download_blastoff_image():
     client = boto3.client(
         's3',
-        aws_access_key_id='_________',
-        aws_secret_access_key='__________',
+        aws_access_key_id='_________', # TODO: Add AWS Access Key
+        aws_secret_access_key='__________', # TODO: Add AWS Access Key
         region_name = 'us-east-2'
     )
     client.download_file('jazimmer-eecs-605-module-08-fingers-dl', 'blastoff.jpg', '/tmp/blastoff.jpg')
